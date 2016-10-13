@@ -3,7 +3,42 @@ import unittest
 import vanity
 
 
-class test_normalize(unittest.TestCase):
+class TestByTwo(unittest.TestCase):
+    """
+    A test class for the by_two method.
+    """
+
+    def test_none(self):
+        input = iter(())
+
+        result = {url: data for (url, data) in vanity.by_two(input)}
+
+        self.assertEqual(result, {})
+
+    def test_pairs_url_and_data(self):
+        input = iter(['test.com', 'test data',
+                      'foo.org', 'foo data',
+                      'bar.net', 'bar data'])
+
+        result = {url: data for (url, data) in vanity.by_two(input)}
+
+        self.assertEqual(result['test.com'], 'test data')
+        self.assertEqual(result['foo.org'], 'foo data')
+        self.assertEqual(result['bar.net'], 'bar data')
+
+    def test_odd_input(self):
+        input = iter(['test.com', 'test data',
+                      'foo.org', 'foo data',
+                      'bar.net'])
+
+        result = {url: data for (url, data) in vanity.by_two(input)}
+
+        self.assertEqual(result['test.com'], 'test data')
+        self.assertEqual(result['foo.org'], 'foo data')
+        self.assertIsNone(result.get('bar.net'))
+
+
+class TestNormalize(unittest.TestCase):
     """
     A test class for the normalize method.
     """
@@ -33,11 +68,6 @@ class test_normalize(unittest.TestCase):
         self.assertEqual(normalized, "               Flask                ")
 
     def test_empty(self):
-        """
-        TODO: this test is rather slow to run,
-        perhaps normalize could be refactored to check this
-        and kick out faster.
-        """
         normalized = vanity.normalize("")
         self.assertEqual(normalized, "")
 
