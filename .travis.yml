@@ -10,6 +10,7 @@ python:
   - 3.5
 
 install:
+  - pip install -U pip
   - python setup.py install
   - if [ "$TRAVIS_PYTHON_VERSION" == "3.2" ]; then travis_retry pip install coverage==3.7.1; fi
   - if [ "$TRAVIS_PYTHON_VERSION" != "3.2" ]; then travis_retry pip install coverage; fi
